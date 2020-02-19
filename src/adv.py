@@ -1,12 +1,6 @@
 from room import Room
 from player import Player
 
-# Declare Players
-player = [
-    Player("Player 1",
-        "room: ""outside")
-]
-
 # Declare all the rooms
 
 room = {
@@ -27,6 +21,11 @@ to north. The smell of gold permeates the air."""),
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
+
+# Declare Players
+player = [
+    Player("Player 1", "outside")
+]
 
 # Link rooms together
 
@@ -56,4 +55,46 @@ room['treasure'].s_to = room['narrow']
 #
 # If the user enters "q", quit the game.
 
+# Function to select action
+def movePlayer(action):
+	switcher = { 
+		"w": "n_to", 
+		"a": "w_to", 
+		"s": "s_to", 
+		"d": "e_to", 
+	} 
+
+	# returns action or default to invalid
+	return switcher.get(action, "invalid") 
+
+# Function to get room key
+#def selectRoom(thisRoom):
+	#for eachRoom in room:
+        #compare name to the key
+
+# Print Player Name
 print("Hello " + player[0].name)
+
+# Get user input
+choice = input("Please choose a direction (w,a,s,d, or q to quit): ")
+
+while choice is not "q":
+    # Get current Player room
+    currentRoom = player[0].room
+
+    print(choice)
+    action = movePlayer(choice)
+    print(action)
+
+    if getattr(room[currentRoom], action):
+        newRoom = getattr(room[currentRoom], action)
+        print(newRoom.name)
+        player[0].room = newRoom.name
+    else:
+        print("Dead End. Please make another selection.")
+
+    # Ask for next direction
+    choice = input("Please choose a direction (w,a,s,d, or q to quit): ")
+
+print("Final Stop - " + player[0].room)
+
