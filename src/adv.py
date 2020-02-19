@@ -1,4 +1,11 @@
 from room import Room
+from player import Player
+
+# Declare Players
+player = [
+    Player("Player 1",
+        "room: ""outside")
+]
 
 # Declare all the rooms
 
@@ -20,7 +27,6 @@ to north. The smell of gold permeates the air."""),
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
-
 
 # Link rooms together
 
@@ -49,3 +55,5 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+print("Hello " + player[0].name)
