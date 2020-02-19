@@ -68,28 +68,42 @@ def movePlayer(action):
 	return switcher.get(action, "invalid") 
 
 # Function to get room key
-#def selectRoom(thisRoom):
+def selectRoom(newRoom):
 	#for eachRoom in room:
         #compare name to the key
+    if newRoom == "Foyer":
+        return "foyer"
 
 # Print Player Name
 print("Hello " + player[0].name)
+print("You are currently located at the " + room[player[0].room].name)
+print(room[player[0].room].description)
 
 # Get user input
 choice = input("Please choose a direction (w,a,s,d, or q to quit): ")
 
 while choice is not "q":
-    # Get current Player room
-    currentRoom = player[0].room
+    print("Current Room: " + player[0].room)
 
-    print(choice)
+    # Get action selected
     action = movePlayer(choice)
-    print(action)
 
-    if getattr(room[currentRoom], action):
-        newRoom = getattr(room[currentRoom], action)
-        print(newRoom.name)
-        player[0].room = newRoom.name
+    # if action is available, select new room
+    if hasattr(room[player[0].room], action):
+        # Get new room
+        newRoom = getattr(room[player[0].room], action)
+
+        # Print new Room
+        print("You are now in the " + newRoom.name)
+
+        # Get room key value
+        newRoom = selectRoom(newRoom.name)
+        
+        # Set room for player
+        if newRoom != None:
+            player[0].room = newRoom
+
+    # action not available, return "Dead End"
     else:
         print("Dead End. Please make another selection.")
 
