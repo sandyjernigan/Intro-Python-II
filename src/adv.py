@@ -1,25 +1,24 @@
+import sys
 from room import Room
 from player import Player
 
 # Declare all the rooms
 
 room = {
-    'outside':  Room("Outside Cave Entrance",
+    'outside':  Room("Outside Cave Entrance", "outside",
                      "North of you, the cave mount beckons"),
 
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+    'foyer':    Room("Foyer", "foyer",
+                    """Dim light filters in from the south. Dusty passages run north and east."""),
 
-    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
-into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+    'overlook': Room("Grand Overlook", "overlook",
+                    """A steep cliff appears before you, falling into the darkness. Ahead to the north, a light flickers in the distance, but there is no way across the chasm."""),
 
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+    'narrow':   Room("Narrow Passage", "narrow",
+                    """The narrow passage bends here from west to north. The smell of gold permeates the air."""),
 
-    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
-chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+    'treasure': Room("Treasure Chamber", "treasure",
+                    """You've found the long-lost treasure chamber! Sadly, it has already been completely emptied by earlier adventurers. The only exit is to the south."""),
 }
 
 # Declare Players
@@ -83,29 +82,32 @@ print(room[player[0].room].description)
 choice = input("Please choose a direction (w,a,s,d, or q to quit): ")
 
 while choice is not "q":
-    print("Current Room: " + player[0].room)
 
     # Get action selected
     action = movePlayer(choice)
 
-    # if action is available, select new room
-    if hasattr(room[player[0].room], action):
-        # Get new room
-        newRoom = getattr(room[player[0].room], action)
-
-        # Print new Room
-        print("You are now in the " + newRoom.name)
-
-        # Get room key value
-        newRoom = selectRoom(newRoom.name)
-        
-        # Set room for player
-        if newRoom != None:
-            player[0].room = newRoom
-
-    # action not available, return "Dead End"
+    if action == "invalid":
+        print("Invalid Selection.")
     else:
-        print("Dead End. Please make another selection.")
+        # if action is available, select new room
+        if hasattr(room[player[0].room], action):
+            # Get new room
+            newRoom = getattr(room[player[0].room], action)
+            
+
+            # Print new Room
+            print("You are now in the " + newRoom.name)
+
+            # Get room key value
+            newRoomName = newRoom.shortname
+            
+            # Set room for player
+            if newRoom != None:
+                player[0].room = newRoomName
+
+        # action not available, return "Dead End"
+        else:
+            print("Dead End. Please make another selection.")
 
     # Ask for next direction
     choice = input("Please choose a direction (w,a,s,d, or q to quit): ")
