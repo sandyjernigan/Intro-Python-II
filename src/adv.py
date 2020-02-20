@@ -1,4 +1,6 @@
 import sys
+import textwrap
+
 from room import Room
 from player import Player
 
@@ -54,6 +56,25 @@ room['treasure'].s_to = room['narrow']
 #
 # If the user enters "q", quit the game.
 
+# Function for formatting output
+def printCenter(string="", num=1, char="~", width=80):
+    # num is the number of times to print
+    # char is character printed around the string text
+    # width is the number of characters wide 
+    for x in range(0,num):
+        print(string.center(width, char))
+
+def printRoom(currentRoom):
+    # Print Current Room
+    pStr = currentRoom.name
+    printCenter(pStr, 1, " ")
+    printCenter("~ ~ ~ ~ ~", 1, " ")
+
+    # Current Room Description
+    print(textwrap.fill(currentRoom.description, 80))
+    printCenter("")
+
+
 # Function to select action
 def movePlayer(action):
 	switcher = { 
@@ -74,14 +95,23 @@ def selectRoom(newRoom):
         return "foyer"
 
 # Print Player Name
-print("Hello " + player[0].name)
-print("You are currently located at the " + room[player[0].room].name)
-print(room[player[0].room].description)
+printCenter("", 2)
+printCenter(" Hello " + player[0].name + " ")
+printCenter("", 2)
+
+# Print Current Room
+print("Current Location:")
+printRoom(room[player[0].room])
 
 # Get user input
-choice = input("Please choose a direction (w,a,s,d, or q to quit): ")
+def userChoice():
+    return input("Please choose a direction (w,a,s,d, or q to quit): ")
 
-while choice is not "q":
+choice = userChoice()
+
+printCenter()
+
+while choice != "q":
 
     # Get action selected
     action = movePlayer(choice)
@@ -96,7 +126,8 @@ while choice is not "q":
             
 
             # Print new Room
-            print("You are now in the " + newRoom.name)
+            print("You have moved into:")
+            printRoom(newRoom)
 
             # Get room key value
             newRoomName = newRoom.shortname
@@ -111,6 +142,7 @@ while choice is not "q":
 
     # Ask for next direction
     choice = input("Please choose a direction (w,a,s,d, or q to quit): ")
+    printCenter()
 
 print("Final Stop - " + player[0].room)
 
